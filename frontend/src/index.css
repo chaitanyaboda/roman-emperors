@@ -1,0 +1,497 @@
+/* ===== CSS Variables ===== */
+:root {
+  --bg: #f9f7f4;
+  --bg-card: #ffffff;
+  --bg-card-hover: #fdfdfd;
+  --bg-header: #ffffff;
+
+  --text-primary: #1a1a2e;
+  --text-secondary: #4a4a6a;
+  --text-muted: #8a8aaa;
+
+  --border: #e4e0f0;
+  --border-dark: #c8c0e0;
+
+  --shadow-sm: 0 1px 4px rgba(60, 40, 120, 0.08);
+  --shadow-md: 0 4px 16px rgba(60, 40, 120, 0.12);
+  --shadow-lg: 0 8px 32px rgba(60, 40, 120, 0.16);
+
+  --radius: 10px;
+  --radius-lg: 14px;
+
+  --font: 'Inter', system-ui, -apple-system, sans-serif;
+
+  --timeline-line-color: #d4cce8;
+  --timeline-dot-border: #ffffff;
+}
+
+/* ===== Reset ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ===== App Layout ===== */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-header {
+  background: var(--bg-header);
+  border-bottom: 1px solid var(--border);
+  padding: 1.25rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.header-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.app-header h1 {
+  font-family: var(--font);
+  font-size: clamp(1.3rem, 3vw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.header-subtitle {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-top: 0.1rem;
+  letter-spacing: 0.02em;
+}
+
+.app-main {
+  flex: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  width: 100%;
+}
+
+/* ===== State Messages ===== */
+.state-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.state-message.error {
+  color: #c0392b;
+}
+
+.state-message code {
+  background: #f0ecf8;
+  border: 1px solid var(--border);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.88em;
+  color: var(--text-secondary);
+}
+
+.error-hint {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--border);
+  border-top-color: #9b8ec4;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
+/* ── Wikipedia icon button ── */
+.card-wiki-btn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+  margin-left: auto;
+  align-self: center;
+}
+
+.card-wiki-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.card-wiki-btn:hover {
+  background: var(--border);
+  color: var(--text-primary);
+}
+
+/* ── Trivia panel (shown on card hover) ── */
+.card-trivia {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease, padding 0.25s ease, opacity 0.2s ease;
+  padding: 0 1rem;
+  opacity: 0;
+  border-top: 0px solid var(--border);
+}
+
+.emperor-card:hover .card-trivia,
+.emperor-card:focus-within .card-trivia {
+  max-height: 120px;
+  padding: 0.65rem 1rem 0.75rem;
+  opacity: 1;
+  border-top-width: 1px;
+}
+
+.card-trivia-text {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin: 0 0 0.4rem;
+}
+
+.card-trivia-link {
+  font-size: 0.72rem;
+  color: #7a6eaa;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.card-trivia-link:hover {
+  text-decoration: underline;
+}
+
+/* ===== Dynasty Legend ===== */
+.dynasty-legend {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.legend-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.legend-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.legend-item--btn {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  padding: 0.2rem 0.55rem 0.2rem 0.35rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.legend-item--btn:hover {
+  background: var(--border);
+  border-color: var(--border-dark);
+}
+
+.legend-item--btn:focus-visible {
+  outline: 2px solid #9b8ec4;
+  outline-offset: 2px;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1.5px solid rgba(0,0,0,0.08);
+}
+
+.legend-name {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* ===== Timeline Layout ===== */
+.timeline-root {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-section-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* The full list with a center vertical line */
+.timeline-list {
+  position: relative;
+  padding: 0.5rem 0 2rem;
+}
+
+.timeline-list::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--timeline-line-color) 4%,
+    var(--timeline-line-color) 96%,
+    transparent
+  );
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+/* Each entry spans full width; cards are pushed left or right */
+.timeline-entry {
+  display: flex;
+  position: relative;
+  margin-bottom: 1.25rem;
+  align-items: flex-start;
+}
+
+/* Left entries: card fills left half */
+.timeline-entry.entry-left {
+  justify-content: flex-end;
+  padding-right: calc(50% + 1.75rem);
+}
+
+/* Right entries: card fills right half */
+.timeline-entry.entry-right {
+  justify-content: flex-start;
+  padding-left: calc(50% + 1.75rem);
+}
+
+/* Dynasty-colored dot, centered on the line */
+.timeline-dot {
+  position: absolute;
+  left: 50%;
+  top: 1.4rem;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 3px solid var(--timeline-dot-border);
+  box-shadow: 0 0 0 2px var(--timeline-line-color);
+  z-index: 2;
+  transition: box-shadow 0.15s;
+}
+
+.timeline-entry:hover .timeline-dot {
+  box-shadow: 0 0 0 3px var(--border-dark);
+}
+
+/* ===== Emperor Card ===== */
+.emperor-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--dynasty-color, #ccc);
+  border-radius: var(--radius);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  overflow: hidden;
+  width: 100%;
+  text-align: left;
+}
+
+.emperor-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.emperor-card:focus-visible {
+  outline: 2px solid #9b8ec4;
+  outline-offset: 2px;
+}
+
+.card-body {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1rem;
+}
+
+.card-portrait {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  background: var(--bg);
+}
+
+.card-portrait-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  background: #f3f0f9;
+}
+
+.card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.card-dynasty-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.25rem;
+}
+
+.card-dynasty-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.card-dynasty {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-reign {
+  margin-top: 0.2rem;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.card-tenure {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 700px) {
+  .app-main {
+    padding: 1rem;
+  }
+
+  .app-header {
+    padding: 1rem;
+  }
+
+  .dynasty-legend {
+    padding: 1rem;
+  }
+
+  /* Collapse to left-side single-column timeline */
+  .timeline-list::before {
+    left: 0.75rem;
+    transform: none;
+  }
+
+  .timeline-entry.entry-left,
+  .timeline-entry.entry-right {
+    padding-left: 2.25rem;
+    padding-right: 0;
+    justify-content: flex-start;
+  }
+
+  .timeline-dot {
+    left: 0.75rem;
+    transform: translateX(-50%);
+  }
+
+  .card-body {
+    padding: 0.75rem;
+    gap: 0.65rem;
+  }
+
+  .card-portrait {
+    width: 44px;
+    height: 44px;
+  }
+
+  .legend-items {
+    gap: 0.4rem 0.75rem;
+  }
+}
