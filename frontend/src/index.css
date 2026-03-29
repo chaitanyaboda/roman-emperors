@@ -495,3 +495,369 @@ body {
     gap: 0.4rem 0.75rem;
   }
 }
+
+/* ===== View Tabs ===== */
+.header-titles {
+  flex: 1;
+}
+
+.view-tabs {
+  display: flex;
+  gap: 0.35rem;
+  margin-left: auto;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.25rem;
+}
+
+.view-tab {
+  background: none;
+  border: none;
+  padding: 0.4rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.view-tab:hover {
+  background: var(--border);
+  color: var(--text-primary);
+}
+
+.view-tab--active {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ===== Selected Emperor Card ===== */
+.emperor-card--selected {
+  border-left-color: var(--dynasty-color, #9b8ec4);
+  box-shadow: var(--shadow-md);
+  background: #fdfbff;
+}
+
+.emperor-card[role="button"] {
+  cursor: pointer;
+}
+
+/* ===== Reign Detail Panel ===== */
+.reign-detail-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+  width: calc(50% - 1.75rem);
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.timeline-entry.entry-right + .reign-detail-panel {
+  margin-left: calc(50% + 1.75rem);
+  margin-right: 0;
+}
+
+.timeline-entry.entry-left + .reign-detail-panel {
+  margin-left: 0;
+  margin-right: calc(50% + 1.75rem);
+}
+
+.reign-detail-panel--open {
+  max-height: 600px;
+  margin-bottom: 1.5rem;
+}
+
+.reign-detail-close {
+  display: block;
+  margin: 0.5rem auto 0;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.reign-detail-close:hover {
+  background: var(--border);
+  color: var(--text-secondary);
+}
+
+/* ===== Reign Timeline (mini) ===== */
+.reign-timeline {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem 0.85rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.rt-heading {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.85rem;
+  text-align: center;
+}
+
+.rt-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+}
+
+.rt-label {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.rt-bar {
+  position: relative;
+  flex: 1;
+  height: 6px;
+  background: linear-gradient(to right, #c8b8f0, #a08ec4);
+  border-radius: 3px;
+}
+
+.rt-event {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: default;
+}
+
+.rt-event-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #8B1A1A;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px #c0392b;
+  flex-shrink: 0;
+}
+
+.rt-event-label {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.6rem;
+  white-space: nowrap;
+  background: rgba(255,255,255,0.92);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.1rem 0.35rem;
+  color: var(--text-secondary);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 10;
+}
+
+.rt-event:hover .rt-event-label {
+  opacity: 1;
+}
+
+.rt-battle-list {
+  list-style: none;
+  border-top: 1px solid var(--border);
+  padding-top: 0.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.rt-battle-item {
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+  font-size: 0.75rem;
+}
+
+.rt-battle-year {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  min-width: 4rem;
+  flex-shrink: 0;
+}
+
+.rt-battle-name {
+  color: var(--text-secondary);
+}
+
+.rt-no-battles {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding-top: 0.5rem;
+  font-style: italic;
+}
+
+/* ===== Empire Map ===== */
+.map-layout {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 1.25rem;
+  height: calc(100vh - 120px);
+  min-height: 500px;
+}
+
+.empire-map-wrap {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+}
+
+.empire-map-header {
+  background: var(--bg-card);
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.empire-map-era-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: #f0ecf8;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 0.15rem 0.65rem;
+  color: #7a6eaa;
+}
+
+.empire-map-emperor {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.empire-map-container {
+  flex: 1;
+  min-height: 0;
+  z-index: 0;
+}
+
+.empire-map-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 0.5rem;
+  background: var(--bg-card);
+}
+
+/* Battle + Rome markers */
+.battle-marker, .rome-marker {
+  background: none;
+  border: none;
+}
+
+.battle-marker-inner, .rome-marker-inner {
+  font-size: 1.2rem;
+  line-height: 1;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
+}
+
+/* Map Sidebar */
+.map-sidebar {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
+}
+
+.map-sidebar-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  padding: 0.75rem 1rem 0.6rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.map-emperor-list {
+  list-style: none;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.map-emperor-btn {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 0.4rem 0.85rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.12s;
+}
+
+.map-emperor-btn:hover {
+  background: var(--bg);
+}
+
+.map-emperor-btn--active {
+  background: #f0ecf8;
+}
+
+.map-emperor-btn-name {
+  font-size: 0.78rem;
+  color: var(--text-primary);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.map-emperor-btn-year {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+@media (max-width: 700px) {
+  .map-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 200px;
+    height: auto;
+  }
+
+  .map-sidebar {
+    max-height: 200px;
+  }
+
+  .view-tabs {
+    display: flex;
+  }
+
+  .reign-detail-panel {
+    width: 100%;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}

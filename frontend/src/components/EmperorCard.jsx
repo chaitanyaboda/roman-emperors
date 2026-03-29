@@ -81,15 +81,19 @@ export function getDynastyColor(dynasty) {
   return dynastyColorMap[dynasty];
 }
 
-export default function EmperorCard({ emperor }) {
+export default function EmperorCard({ emperor, onClick, isSelected }) {
   const dynastyColor = getDynastyColor(emperor.dynasty);
   const tenure = formatTenure(emperor.reign_start, emperor.reign_end);
   const trivia = extractTrivia(emperor.summary);
 
   return (
     <article
-      className="emperor-card"
+      className={`emperor-card${isSelected ? ' emperor-card--selected' : ''}`}
       style={{ '--dynasty-color': dynastyColor }}
+      onClick={onClick}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={onClick ? (e) => { if (e.key === 'Enter' || e.key === ' ') onClick(e); } : undefined}
     >
       {/* ── Main row ── */}
       <div className="card-body">

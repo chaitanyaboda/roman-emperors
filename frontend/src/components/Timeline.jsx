@@ -1,5 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import EmperorCard, { getDynastyColor } from './EmperorCard.jsx';
+import ReignTimeline from './ReignTimeline.jsx';
 
 function formatYear(year) {
   if (year == null) return '?';
@@ -7,9 +8,8 @@ function formatYear(year) {
   return `AD ${year}`;
 }
 
-// px of vertical space per year of reign (dot-to-dot gap ≈ duration × this)
 const PX_PER_YEAR = 4;
-const MIN_GAP_PX = 18; // minimum spacing so cards never collide
+const MIN_GAP_PX = 18;
 
 function DynastyLegend({ emperors, onDynastyClick }) {
   const seen = new Set();
@@ -43,8 +43,7 @@ function DynastyLegend({ emperors, onDynastyClick }) {
   );
 }
 
-export default function Timeline({ emperors }) {
-  // Map of dynasty → ref on the first entry of that dynasty
+export default function Timeline({ emperors, onSelectEmperor, selectedEmperor }) {
   const dynastyRefs = useRef({});
 
   if (!emperors.length) {
@@ -55,19 +54,20 @@ export default function Timeline({ emperors }) {
     );
   }
 
-  // Sort by reign start so the timeline is chronological
   const sorted = [...emperors]
     .filter((e) => e.reign_start != null)
     .sort((a, b) => a.reign_start - b.reign_start);
 
-  // Track which dynasties we've already seen (for first-entry anchor)
   const seenDynasties = new Set();
 
   function handleDynastyClick(dynasty) {
     const el = dynastyRefs.current[dynasty];
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function handleCardClick(emperor) {
+    // Toggle: clicking selected emperor collapses it
+    onSelectEmperor(selectedEmperor?.id === emperor.id ? null : emperor);
   }
 
   return (
@@ -82,27 +82,50 @@ export default function Timeline({ emperors }) {
             const start = emperor.reign_start;
             const end = emperor.reign_end ?? emperor.reign_start;
             const durationYears = Math.max(end - start, 0);
-
-            // Gap below this entry = proportional to reign duration
             const gapPx = Math.max(durationYears * PX_PER_YEAR, MIN_GAP_PX);
 
-            // Attach a ref to the first entry of each dynasty
             const isFirstOfDynasty = emperor.dynasty && !seenDynasties.has(emperor.dynasty);
             if (isFirstOfDynasty) seenDynasties.add(emperor.dynasty);
 
+            const isSelected = selectedEmperor?.id === emperor.id;
+
             return (
-              <div
-                key={emperor.id}
-                ref={isFirstOfDynasty ? (el) => { dynastyRefs.current[emperor.dynasty] = el; } : null}
-                className={`timeline-entry ${idx % 2 === 0 ? 'entry-left' : 'entry-right'}`}
-                style={{ marginBottom: `${gapPx}px` }}
-              >
+              <React.Fragment key={emperor.id}>
                 <div
-                  className="timeline-dot"
-                  style={{ background: getDynastyColor(emperor.dynasty) }}
-                />
-                <EmperorCard emperor={emperor} />
-              </div>
+                  ref={isFirstOfDynasty ? (el) => { dynastyRefs.current[emperor.dynasty] = el; } : null}
+                  className={`timeline-entry ${idx % 2 === 0 ? 'entry-left' : 'entry-right'}`}
+                  style={{ marginBottom: isSelected ? '0' : `${gapPx}px` }}
+                >
+                  <div
+                    className="timeline-dot"
+                    style={{ background: getDynastyColor(emperor.dynasty) }}
+                  />
+                  <EmperorCard
+                    emperor={emperor}
+                    onClick={() => handleCardClick(emperor)}
+                    isSelected={isSelected}
+                  />
+                </div>
+
+                {/* Expanded reign detail panel */}
+                <div
+                  className={`reign-detail-panel ${isSelected ? 'reign-detail-panel--open' : ''}`}
+                  aria-hidden={!isSelected}
+                >
+                  {isSelected && (
+                    <>
+                      <ReignTimeline emperor={emperor} />
+                      <button
+                        className="reign-detail-close"
+                        onClick={() => onSelectEmperor(null)}
+                        aria-label="Collapse detail"
+                      >
+                        ▲ Collapse
+                      </button>
+                    </>
+                  )}
+                </div>
+              </React.Fragment>
             );
           })}
         </div>
